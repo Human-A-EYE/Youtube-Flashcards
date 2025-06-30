@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UTube University</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-4xl flex flex-col items-center space-y-6">
+        <!-- Title Section -->
+        <h1 class="text-5xl font-extrabold text-blue-800 mb-6 text-center">
+            UTube University
+        </h1>
+
+        <!-- YouTube Link Input -->
+        <div class="w-full flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 sm:space-x-3">
+            <input
+                type="text"
+                id="youtubeLinkInput"
+                placeholder="Paste YouTube video link here..."
+                class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 w-full"
+            />
+            <button
+                id="loadVideoButton"
+                class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out w-full sm:w-auto"
+            >
+                Load Video
+            </button>
+        </div>
+
+        <!-- YouTube Video Embed -->
+        <div id="videoPlayerContainer" class="w-full bg-gray-200 rounded-lg overflow-hidden shadow-inner" style="padding-bottom: 56.25%; position: relative;">
+            <iframe
+                id="youtubeVideo"
+                class="absolute top-0 left-0 w-full h-full rounded-lg"
+                src=""
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+            ></iframe>
+            <div id="videoPlaceholder" class="absolute top-0 left-0 w-full h-full flex items-center justify-center text-gray-500 text-lg font-medium bg-gray-100 rounded-lg">
+                Video will appear here
+            </div>
+        </div>
+
+        <!-- Section Toggle Buttons -->
+        <div class="w-full flex justify-center space-x-4 mt-6">
+            <button
+                id="showFlashcardsBtn"
+                class="px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-300 ease-in-out w-full sm:w-auto"
+            >
+                Flashcards
+            </button>
+            <button
+                id="showFlashcardMakerBtn"
+                class="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out w-full sm:w-auto"
+            >
+                Flashcard Maker
+            </button>
+            <button
+                id="showTranscriptToolBtn"
+                class="px-6 py-3 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-300 ease-in-out w-full sm:w-auto"
+            >
+                Transcript Tool
+            </button>
+        </div>
+
+        <!-- Flashcard Maker Section -->
+        <div id="flashcardMakerSection" class="w-full mt-6 p-4 border border-gray-200 rounded-lg bg-gray-50 shadow-sm hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Flashcard Maker</h2>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4 mb-4">
+                <div class="flex flex-col w-full sm:w-1/2">
+                    <label for="startTimeInput" class="block text-gray-700 text-sm font-bold mb-2">Start Time (MM:SS or SS):</label>
+                    <input
+                        type="text"
+                        id="startTimeInput"
+                        placeholder="e.g., 0:30 or 30"
+                        class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 w-full"
+                    />
+                </div>
+                <div class="flex flex-col w-full sm:w-1/2">
+                    <label for="endTimeInput" class="block text-gray-700 text-sm font-bold mb-2">End Time (MM:SS or SS):</label>
+                    <input
+                        type="text"
+                        id="endTimeInput"
+                        placeholder="e.g., 1:30 or 90"
+                        class="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 w-full"
+                    />
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label for="questionInput" class="block text-gray-700 text-sm font-bold mb-2">Question:</label>
+                <textarea
+                    id="questionInput"
+                    placeholder="Enter your question here..."
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 resize-y"
+                    rows="3"
+                ></textarea>
+            </div>
+
+            <!-- Question Type Selection -->
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Question Type:</label>
+                <div class="flex items-center space-x-4">
+                    <input type="radio" id="type_multiple_choice" name="questionType" value="multiple-choice" class="form-radio text-blue-600" checked>
+                    <label for="type_multiple_choice" class="text-gray-700">Find the right answer (Select ONE)</label>
+                </div>
+                <div class="flex items-center space-x-4 mt-2">
+                    <input type="radio" id="type_check_all" name="questionType" value="check-all-that-apply" class="form-radio text-blue-600">
+                    <label for="type_check_all" class="text-gray-700">Check all that apply</label>
+                </div>
+            </div>
+
+            <!-- Dynamic Options Container -->
+            <div id="optionsContainer" class="mb-4 space-y-3">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Answer Options:</label>
+                <!-- Dynamic options will be appended here by JavaScript -->
+            </div>
+
+            <button
+                id="saveFlashcardButton"
+                class="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-300 ease-in-out w-full"
+            >
+                Save Flashcard
+            </button>
+            <button
+                id="clearFlashcardMakerFormBtn"
+                class="mt-3 px-6 py-3 bg-gray-400 text-white font-semibold rounded-lg shadow-md hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-300 ease-in-out w-full"
+            >
+                Clear Form
+            </button>
+        </div>
+
+        <!-- Transcript Tool Section -->
+        <div id="transcriptToolSection" class="w-full mt-6 p-4 border border-gray-200 rounded-lg bg-gray-50 shadow-sm hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Transcript Tool</h2>
+            <div class="w-full h-96 bg-white rounded-lg overflow-hidden shadow-inner flex items-center justify-center">
+                <iframe
+                    id="transcriptIframe"
+                    src="https://www.youtube-transcript.io/"
+                    frameborder="0"
+                    class="w-full h-full rounded-lg"
+                    title="YouTube Transcript Tool"
+                ></iframe>
+            </div>
+            <p class="text-sm text-red-500 mt-2 text-center" id="iframeWarning">
+                Note: This tool may be blocked from embedding due to security policies (X-Frame-Options or CSP). If it doesn't load, please open it directly in a new tab: <a href="https://www.youtube-transcript.io/" target="_blank" class="text-blue-600 hover:underline">youtube-transcript.io</a>
+            </p>
+        </div>
+
+
+        <!-- Flashcards Display Section -->
+        <div id="flashcardsDisplaySection" class="w-full mt-6 p-4 border border-gray-200 rounded-lg bg-gray-50 shadow-sm hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Your Flashcards</h2>
+            <div class="flex justify-center items-center space-x-4 mb-4">
+                <span id="scoreDisplay" class="text-lg font-bold text-gray-700">Score: 0/0</span>
+                <span id="streakDisplay" class="text-lg font-bold text-gray-700">Streak: 0</span>
+            </div>
+            <div id="currentFlashcardContainer" class="bg-white p-6 rounded-lg shadow-md border border-blue-200 min-h-[150px] flex flex-col justify-between">
+                <p id="currentQuestion" class="text-gray-900 text-lg font-semibold mb-4">No flashcards created yet. Go to "Flashcard Maker" to create some!</p>
+                <div id="currentOptions" class="space-y-2">
+                    <!-- Options will be dynamically loaded here -->
+                </div>
+                <div class="flex justify-between items-center mt-4 space-x-2">
+                    <button id="checkAnswerButton" class="flex-grow px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-300 ease-in-out">
+                        Check Answer
+                    </button>
+                    <button id="nextFlashcardButton"
+                        class="flex-grow px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-300 ease-in-out">
+                        Next Flashcard
+                    </button>
+                </div>
+                <p id="feedbackMessage" class="text-center mt-3 text-lg font-medium"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Container -->
+    <div id="confettiContainer" class="confetti-container hidden"></div>
+
+    <!-- Custom Modal for Messages -->
+    <div id="customModal" class="fixed inset-0 bg-gray-600 bg-opacity-75 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-xl p-6 m-4 max-w-sm w-full">
+            <h3 class="text-xl font-bold mb-4 text-gray-800" id="modalTitle"></h3>
+            <p class="text-gray-700 mb-6" id="modalMessage"></p>
+            <div class="flex justify-end">
+                <button id="modalCloseButton" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Link to external JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
